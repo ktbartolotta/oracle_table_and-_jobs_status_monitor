@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatable" content="IE=edge">
+    <HTA:Application WindowState = Maximize>
+    <link rel="stylesheet" type="text/css" href="app\lib\jquery\css\ui-lightness\jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" type="text/css" href="app/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="app/styles/style.css">
+
+    <script type="text/template" id="paths-template">
+        <table class="table" style="background-color: white;">
+            <caption><%= title %></caption>
+            <thread>
+                <tr>
+                    <th>Exe Path</th>
+                    <th>Start File</th>
+                    <th>SQL File</th>
+                    <th>Independant Table</th>
+                    <th>Dependant Table</th>
+                </tr>
+            </thread>
+            <tbody>
+                <% _.each(matches, function (match) { %>
+                    <tr>
+                        <td>
+                            <% if (match.PROCESS_PATH !== null) { %>
+                                <% _.each(match.PROCESS_PATH.split(","), function (path) { %>
+                                    <a class="path-link" href="#"><%= path %></a> &gt
+                                <% }); %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (match.PROCESS_PATH !== null) { %>
+                                <a class="path-link" href="#"><%= match.START_FILE %></a> &gt
+                            <% } %>
+                        </td>
+                        <td>
+                            <a class="path-link" href="#"><%= match.SQL_FILE %></a> &gt
+                        </td>
+                        <td>
+                            <%= match.INDEPENDANT_TABLE %> &gt
+                        </td>
+                        <td>
+                            <%= match.DEPENDANT_TABLE %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/template" id="file-text-template">
+        <p>
+            <% _.each(fileText, function (line) { %>
+                <%= line %></br>
+            <% }); %>
+        </p>
+    </script>
+
+    <script type="text/template" id="error-template">
+        <table class="table" style="background-color:white;">
+            <thread>
+                <tr>
+                    <th>DateTime</th>
+                    <th>Source</th>
+                    <th>Error</th>
+                </tr>
+            </thread>
+            <tbody>
+                <% _.each(errorObjects, function (errorObject) { %>
+                    <tr>
+                        <td><%= errorObject.dateTime %></td>
+                        <td><%= errorObject.file %></td>
+                        <td><%= errorObject.error %></td>
+                <% }); %>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/template" id="audit-template">
+        <table class="table" style="background-color:white;">
+            <caption>Table Row Counts for Last 3 Runs</caption>
+            <thread>
+                <tr>
+                    <th>Business Area</th>
+                    <th>Table</th>
+                    <th>Description</th>
+                    <th>Last Run</th>
+                    <th>One Run Out</th>
+                    <th>Two Runs Out</th>
+                </tr>
+            </thread>
+            <tbody>
+                <% _.each(auditObjects, function (auditObject) { %>
+                    <tr>
+                        <td><%= auditObject.BUS_AREA %></td>
+                        <td><%= auditObject.TABLE_NAME %></td>
+                        <td><%= auditObject.OBJ_NAME %></td>
+                        <td class="<%= tableAuditor.getRowClass(auditObject.PRIMARY_DIFF) %>"><%= auditObject.LAST_RUN %></td>
+                        <td class="<%= tableAuditor.getRowClass(auditObject.SECONDARY_DIFF) %>"><%= auditObject.ONE_RUN_OUT %></td>
+                        <td><%= auditObject.TWO_RUNS_OUT %></td>
+                <% }); %>
+            </tbody>
+        </table>
+    </script>
+
+</head>
+<body>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">PADH Application</h3>
+        </div>
+        <div class="panel-body">
+            <span class="ui-widget">
+                <div id="tabs">
+                    <ul>
+                        <li><a id="table-finder-tab" href="#tabs-1">Table Finder</a></li>
+                        <li><a id="error-tab" href="#tabs-2">Error Log</a></li>
+                        <li><a id="table-audit-tab" href="#tabs-3">Table Audit</a></li>
+                    </ul>
+                    <div id="tabs-1">
+                        <div id="dialog" style="display: none;"></div>
+                        <div class="jumbotron">
+                            <h1 style="float: left; margin-right: 50px;">Table Finder</h1>
+                            <span class="label label-default">Enter table name:</span>
+                            <input id="table-input" type="text" class="form-control" style="width: 350px;">
+                        </div>
+                        <div id="path-div">
+                        </div>
+                    </div>
+                    <div id="tabs-2">
+                        <div class="jumbotron">
+                            <div class="input-group">
+                            <h1 style="float:left;margin-right: 50px;padding:5px">Error Log</h1>
+                            </div>
+                        </div>
+                        <div id="error-div"></div>
+                    </div>
+                    <div id="tabs-3">
+                        <div class="jumbotron">
+                            <h1>Table Audit</h1>
+                        </div>
+                        <table class="table">
+                            <tr>
+                                <td class="runCountCritical">
+                                    At least a 50% difference from previous count
+                                </td>
+                                <td class="runCountWarning">
+                                    At least a 25% difference from previous count
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="audit-div"></div>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>
+    <script type="text/javascript" src="app\lib\html5shiv\html5shiv.min.js"></script>
+    <script type="text/javascript" src="app/lib/ADODB.js"></script>
+    <script type="text/javascript" src="app/lib/jquery/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="app/lib/underscore-min.js"></script>
+    <script type="text/javascript" src="app\lib\jquery\js\jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="app/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="app/src/table-finder.js"></script>
+    <script type="text/javascript" src="app/src/error-reader.js"></script>
+    <script type="text/javascript" src="app/src/table-auditor.js"></script>
+    <script type="text/javascript" src="app/src/main.js"></script>
+</body>
+</html>

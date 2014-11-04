@@ -1,0 +1,11 @@
+.runCountWarning {
+    color: brown;
+    background-color: yellow;
+}
+
+.runCountCritical {
+    color: red;
+    background-color: pink;
+}
+
+.safeCount {}
