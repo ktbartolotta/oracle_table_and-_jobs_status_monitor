@@ -25,11 +25,23 @@ tablefinder.getList = function () {
             "Provider=msdaora;Data source=padh;"
             + "User id=ppl;Password=energy"
         );
-        return cnn.Execute(
-            "select distinct process_path, start_file, sql_file, "
-            + "independant_table, dependant_table from padh_table_process_paths_vw "
-            + "order by process_path"
+    return cnn.Execute(
+        "select distinct process_path, start_file, sql_file, "
+        + "independant_table, dependant_table from padh_table_process_paths_vw "
+        + "order by process_path"
+    );
+}
+
+tablefinder.getFilePathToDepTableList = function () {
+    var cnn = ADODB.connection(
+            "Provider=msdaora;Data source=padh;"
+            + "User id=ppl;Password=energy"
         );
+    return cnn.Execute(
+        "select distinct process_path, start_file, sql_file, "
+        + "dependant_table from padh_table_process_paths_vw "
+        + "order by process_path"
+    );
 }
 
 tablefinder.getFileText = function (filePath) {

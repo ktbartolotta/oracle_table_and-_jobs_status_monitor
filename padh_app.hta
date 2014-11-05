@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="app/lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="app/styles/style.css">
 
-    <script type="text/template" id="paths-template">
+    <script type="text/template" id="indep-paths-template">
         <table class="table" style="background-color: white;">
             <caption><%= title %></caption>
             <thread>
@@ -42,6 +42,52 @@
                         </td>
                         <td>
                             <%= match.DEPENDANT_TABLE %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/template" id="dep-paths-template">
+        <table class="table" style="background-color: white;">
+            <caption><%= title %></caption>
+            <thread>
+                <tr>
+                    <th>Exe Path</th>
+                    <th>Start File</th>
+                    <th>SQL File</th>
+                    <th>Independant Table</th>
+                </tr>
+            </thread>
+            <tbody>
+                <% _.each(matches, function (match) { %>
+                    <tr>
+                        <td>
+                            <% if (match.PROCESS_PATH !== null) { %>
+                                <% _.each(match.PROCESS_PATH.split(","), function (path) { %>
+                                    <a class="path-link" href="#"><%= path %></a> &gt
+                                <% }); %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (match.PROCESS_PATH !== null) { %>
+                                <a class="path-link" href="#"><%= match.START_FILE %></a> &gt
+                            <% } %>
+                        </td>
+                        <td>
+                            <a class="path-link" href="#"><%= match.SQL_FILE %></a> &gt
+                        </td>
+                        <td>
+                            <button class="btn btn-default indep-open">...
+                                <div class="panel panel-default" style="display:None;">
+                                <ul class="list-group" style="list-style-type:None;">
+                                    <li class="list-group-item" >stuff</li>
+                                    <li class="list-group-item">stuff2</li>
+                                    <li class="list-group-item">stuff3</li>
+                                </ul>
+                                </div>
+                            </button>
                         </td>
                     </tr>
                 <% }); %>

@@ -1,30 +1,34 @@
 $(function () {
     $("#tabs").tabs();
     var auditTimer = '';
-    var template = _.template($("#paths-template").html());
+    var indepTemplate = _.template($("#indep-paths-template").html());
+    var depTemplate = _.template($("#dep-paths-template").html());
     var errorTemplate = _.template($("#error-template").html());
     var fileTemplate = _.template($("#file-text-template").html());
     var auditTemplate = _.template($("#audit-template").html());
     var recs = tablefinder.getList();
+    var pathRoleUpList = tablefinder.getFilePathToDepTableList();
     var tables = _.pluck(tablefinder.getTables(), "TARGET_TABLE")
+
     $("#table-input").autocomplete({
         source: tables,
         minLength: 4,
         select: function (event, ui) {
             var value = ui.item.value;
-            var dep_matches = _.filter(recs, function (r) {
+            var dep_matches = _.filter(pathRoleUpList, function (r) {
                 return r.DEPENDANT_TABLE === value;
             });
+
             var indep_matches = _.filter(recs, function (r) {
                 return r.INDEPENDANT_TABLE === value;
             });
             $("#path-div").html(
-                template({
+                depTemplate({
                     matches: dep_matches, 
                     title: value + " Dependant Process Paths"
                 }));
             $("#path-div").append(
-                template({
+                indepTemplate({
                     matches: indep_matches,
                     title: value + " Independant Process Paths"
                 }));
@@ -35,6 +39,10 @@ $(function () {
                         fileText: tablefinder.getFileText($(this).text())
                 }));
                 $("#dialog").dialog("open");
+            });
+
+            $(".btn.btn-default.indep-open").click(function () {
+                $(this).children().toggle();
             });
         }
     });
