@@ -70,7 +70,7 @@
                 <% _.each(errorObjects, function (errorObject) { %>
                     <tr>
                         <td><%= errorObject.dateTime %></td>
-                        <td><%= errorObject.file %></td>
+                        <td><a class="error-path-link" href="#"><%= errorObject.file %></a></td>
                         <td><%= errorObject.error %></td>
                 <% }); %>
             </tbody>

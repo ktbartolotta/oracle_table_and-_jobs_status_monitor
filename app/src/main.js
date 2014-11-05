@@ -63,6 +63,14 @@ $(function () {
             errorTemplate({
                 errorObjects: errorReader.getErrorObjects()
         }));
+
+        $("a.error-path-link").click(function () {
+            $("#dialog").html(
+                fileTemplate({
+                    fileText: errorReader.getFileText($(this).text())
+            }));
+            $("#dialog").dialog("open");
+        });
     });
 
     $("#table-audit-tab").click(function () {

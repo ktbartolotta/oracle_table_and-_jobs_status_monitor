@@ -23,3 +23,12 @@ errorReader.getErrorObjects = function () {
     }
     return errorList;
 }
+
+errorReader.getFileText = function (filePath) {
+    var oShell = new ActiveXObject("WScript.Shell");
+    var shellStream = oShell.Exec(
+        "app\\rsc\\plink.exe " + tablefinder.getUserID() + "@lnx-efh-1: "
+        + "\"cat " + filePath + "\"");
+
+    return shellStream.StdOut.ReadAll().split("\n");
+}
