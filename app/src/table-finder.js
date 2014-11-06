@@ -44,6 +44,42 @@ tablefinder.getFilePathToDepTableList = function () {
     );
 }
 
+tablefinder.getIndepTableBySqlFileAndDepTable = function (sqlFile, depTable) {
+    var cnn = ADODB.connection(
+            "Provider=msdaora;Data source=padh;"
+            + "User id=ppl;Password=energy"
+        );
+    return cnn.Execute(
+        "select distinct independant_table from padh_table_process_paths_vw "
+        + "where sql_file = '" + sqlFile + "' and dependant_table = '"
+        + depTable + "' order by independant_table"
+    );
+}
+
+tablefinder.getFilePathToIndepTableList = function () {
+    var cnn = ADODB.connection(
+            "Provider=msdaora;Data source=padh;"
+            + "User id=ppl;Password=energy"
+        );
+    return cnn.Execute(
+        "select distinct process_path, start_file, sql_file, "
+        + "independant_table from padh_table_process_paths_vw "
+        + "order by process_path"
+    );
+}
+
+tablefinder.getDepTableBySqlFileAndIndepTable = function (sqlFile, indepTable) {
+    var cnn = ADODB.connection(
+            "Provider=msdaora;Data source=padh;"
+            + "User id=ppl;Password=energy"
+        );
+    return cnn.Execute(
+        "select distinct dependant_table from padh_table_process_paths_vw "
+        + "where sql_file = '" + sqlFile + "' and independant_table = '"
+        + indepTable + "' order by dependant_table"
+    );
+}
+
 tablefinder.getFileText = function (filePath) {
     if (filePath === 'schedule') {
         filePath = 'padhaud/' + filePath;

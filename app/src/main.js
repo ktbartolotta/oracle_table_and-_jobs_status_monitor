@@ -6,7 +6,8 @@ $(function () {
     var errorTemplate = _.template($("#error-template").html());
     var fileTemplate = _.template($("#file-text-template").html());
     var auditTemplate = _.template($("#audit-template").html());
-    var recs = tablefinder.getList();
+    var tableListTemplate = _.template($("#indep-table-list-template").html());
+    var recs = tablefinder.getFilePathToIndepTableList();
     var pathRoleUpList = tablefinder.getFilePathToDepTableList();
     var tables = _.pluck(tablefinder.getTables(), "TARGET_TABLE")
 
@@ -42,7 +43,7 @@ $(function () {
             });
 
             $(".btn.btn-default.indep-open").click(function () {
-                $(this).children().toggle();
+                $(this).siblings().toggle();
             });
         }
     });

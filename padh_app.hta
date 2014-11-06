@@ -15,8 +15,7 @@
                     <th>Exe Path</th>
                     <th>Start File</th>
                     <th>SQL File</th>
-                    <th>Independant Table</th>
-                    <th>Dependant Table</th>
+                    <th>Dependant Tables</th>
                 </tr>
             </thread>
             <tbody>
@@ -38,10 +37,14 @@
                             <a class="path-link" href="#"><%= match.SQL_FILE %></a> &gt
                         </td>
                         <td>
-                            <%= match.INDEPENDANT_TABLE %> &gt
-                        </td>
-                        <td>
-                            <%= match.DEPENDANT_TABLE %>
+                            <button class="btn btn-default indep-open">...</button>
+                            <div class="panel panel-default" style="display:None;">
+                                <ul class="list-group" style="list-style-type:None;">
+                                    <% _.each(tablefinder.getDepTableBySqlFileAndIndepTable(match.SQL_FILE, match.INDEPENDANT_TABLE), function (table) { %>
+                                        <li class="list-group-item"><%= table.DEPENDANT_TABLE %></li>
+                                    <% }); %>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 <% }); %>
@@ -57,7 +60,7 @@
                     <th>Exe Path</th>
                     <th>Start File</th>
                     <th>SQL File</th>
-                    <th>Independant Table</th>
+                    <th>Independant Tables</th>
                 </tr>
             </thread>
             <tbody>
@@ -79,20 +82,27 @@
                             <a class="path-link" href="#"><%= match.SQL_FILE %></a> &gt
                         </td>
                         <td>
-                            <button class="btn btn-default indep-open">...
-                                <div class="panel panel-default" style="display:None;">
+                            <button class="btn btn-default indep-open">...</button>
+                            <div class="panel panel-default" style="display:None;">
                                 <ul class="list-group" style="list-style-type:None;">
-                                    <li class="list-group-item" >stuff</li>
-                                    <li class="list-group-item">stuff2</li>
-                                    <li class="list-group-item">stuff3</li>
+                                    <% _.each(tablefinder.getIndepTableBySqlFileAndDepTable(match.SQL_FILE, match.DEPENDANT_TABLE), function (table) { %>
+                                        <li class="list-group-item"><%= table.INDEPENDANT_TABLE %></li>
+                                    <% }); %>
                                 </ul>
-                                </div>
-                            </button>
+                            </div>
                         </td>
                     </tr>
                 <% }); %>
             </tbody>
         </table>
+    </script>
+
+    <script type="text/template" id="indep-table-list-template">
+        <ul class="list-group" style="list-style-type:None;">
+            <% _.each(tables, function (table) { %>
+                <li class="list-group-item"><%= table %></li>
+            <% }); %>
+        </ul>
     </script>
 
     <script type="text/template" id="file-text-template">
