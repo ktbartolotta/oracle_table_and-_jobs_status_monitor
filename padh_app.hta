@@ -141,6 +141,7 @@
                     <th>Business Area</th>
                     <th>Table</th>
                     <th>Description</th>
+                    <th>Updated</th>
                     <th>Last Run</th>
                     <th>One Run Out</th>
                     <th>Two Runs Out</th>
@@ -152,6 +153,7 @@
                         <td><%= auditObject.BUS_AREA %></td>
                         <td><%= auditObject.TABLE_NAME %></td>
                         <td><%= auditObject.OBJ_NAME %></td>
+                        <td><%= auditObject.UPDATED_ON %></td>
                         <td class="<%= tableAuditor.getRowClass(auditObject.PRIMARY_DIFF) %>"><%= auditObject.LAST_RUN %></td>
                         <td class="<%= tableAuditor.getRowClass(auditObject.SECONDARY_DIFF) %>"><%= auditObject.ONE_RUN_OUT %></td>
                         <td><%= auditObject.TWO_RUNS_OUT %></td>

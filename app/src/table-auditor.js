@@ -7,7 +7,7 @@ tableAuditor.getTableList = function () {
         );
 
     return cnn.Execute(
-        "select * from PADHAUD_VW"
+        "select * from PADHAUD_ROW_COUNT_COMP_VW"
     );
 }
 
