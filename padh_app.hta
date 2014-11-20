@@ -162,6 +162,19 @@
         </table>
     </script>
 
+    <script type="text/template" id="table-finder-tabs-template">
+        <ul id="table-finder-tab-list">
+            <% _.each(tabs, function (tab) { %>
+                <li><a href="#tf-tabs-<%= tab.name %>"><%= tab.name %></a></li>
+            <% }); %>
+        </ul>
+        <% _.each(tabs, function (tab) { %>
+            <div id="tf-tabs-<%= tab.name %>">
+                <div><%= tab.content %></div>
+            </div>
+        <% }); %>
+    </script>
+
 </head>
 <body>
     <div class="panel panel-default">
@@ -183,8 +196,7 @@
                             <span class="label label-default">Enter table name:</span>
                             <input id="table-input" type="text" class="form-control" style="width: 350px;">
                         </div>
-                        <div id="path-div">
-                        </div>
+                        <div id="table-finder-tabs"></div>
                     </div>
                     <div id="tabs-2">
                         <div class="jumbotron">

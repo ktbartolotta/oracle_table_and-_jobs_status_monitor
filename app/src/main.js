@@ -1,5 +1,6 @@
 $(function () {
     $("#tabs").tabs();
+
     var auditTimer = '';
     var indepTemplate = _.template($("#indep-paths-template").html());
     var depTemplate = _.template($("#dep-paths-template").html());
@@ -7,6 +8,7 @@ $(function () {
     var fileTemplate = _.template($("#file-text-template").html());
     var auditTemplate = _.template($("#audit-template").html());
     var tableListTemplate = _.template($("#indep-table-list-template").html());
+    var tableFinderTabTemplate = _.template($("#table-finder-tabs-template").html());
     var recs = tablefinder.getFilePathToIndepTableList();
     var pathRoleUpList = tablefinder.getFilePathToDepTableList();
     var tables = _.pluck(tablefinder.getTables(), "TARGET_TABLE")
@@ -23,16 +25,34 @@ $(function () {
             var indep_matches = _.filter(recs, function (r) {
                 return r.INDEPENDANT_TABLE === value;
             });
-            $("#path-div").html(
-                depTemplate({
-                    matches: dep_matches, 
-                    title: value + " Dependant Process Paths"
-                }));
-            $("#path-div").append(
-                indepTemplate({
-                    matches: indep_matches,
-                    title: value + " Independant Process Paths"
-                }));
+
+            var tabs = [];
+
+            if (dep_matches.length > 0) {
+                tabs.push({
+                    name: "Dependant",
+                    content: depTemplate({
+                        matches: dep_matches, 
+                        title: value + " Dependant Process Paths"
+                    })
+                });
+            }
+            if (indep_matches.length > 0) {
+                tabs.push({
+                    name: "Independant",
+                    content: indepTemplate({
+                        matches: indep_matches,
+                        title: value + " Independant Process Paths"
+                    })
+                });
+            }
+
+            $("#table-finder-tabs").html(
+                tableFinderTabTemplate({
+                    tabs: tabs
+            }));
+
+            $("#table-finder-tabs").tabs();
 
             $("a.path-link").click(function () {
                 $("#dialog").html(
