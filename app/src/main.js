@@ -9,42 +9,57 @@ $(function () {
     var auditTemplate = _.template($("#audit-template").html());
     var tableListTemplate = _.template($("#indep-table-list-template").html());
     var tableFinderTabTemplate = _.template($("#table-finder-tabs-template").html());
+    var tableFinderReportTemplate = _.template($("#table-finder-reports-template").html());
     var recs = tablefinder.getFilePathToIndepTableList();
     var pathRoleUpList = tablefinder.getFilePathToDepTableList();
-    var tables = _.pluck(tablefinder.getTables(), "TARGET_TABLE")
+    var reportToTableList = tablefinder.getTableToReportList();
+    var tables = _.pluck(tablefinder.getTables(), "TARGET_TABLE");
 
     $("#table-input").autocomplete({
         source: tables,
         minLength: 4,
         select: function (event, ui) {
             var value = ui.item.value;
-            var dep_matches = _.filter(pathRoleUpList, function (r) {
+            var depMatches = _.filter(pathRoleUpList, function (r) {
                 return r.DEPENDANT_TABLE === value;
             });
 
-            var indep_matches = _.filter(recs, function (r) {
+            var indepMatches = _.filter(recs, function (r) {
                 return r.INDEPENDANT_TABLE === value;
+            });
+
+            var reportMatches = _.filter(reportToTableList, function (r) {
+                return r.TABLE_NAME === value;
             });
 
             var tabs = [];
 
-            if (dep_matches.length > 0) {
+            if (depMatches.length > 0) {
                 tabs.push({
                     name: "Dependant",
                     content: depTemplate({
-                        matches: dep_matches, 
+                        matches: depMatches, 
                         title: value + " Dependant Process Paths"
                     })
                 });
             }
-            if (indep_matches.length > 0) {
+            if (indepMatches.length > 0) {
                 tabs.push({
                     name: "Independant",
                     content: indepTemplate({
-                        matches: indep_matches,
+                        matches: indepMatches,
                         title: value + " Independant Process Paths"
                     })
                 });
+            }
+            if (reportMatches.length > 0) {
+                tabs.push({
+                    name: "Reports",
+                    content: tableFinderReportTemplate({
+                        reports: reportMatches,
+                        title: value + " Report Paths"
+                    })
+                })
             }
 
             $("#table-finder-tabs").html(
@@ -52,7 +67,15 @@ $(function () {
                     tabs: tabs
             }));
 
+            try {
+                $("#table-finder-tabs").tabs("destroy").tabs();
+            }
+            catch (e) {}
             $("#table-finder-tabs").tabs();
+
+            $("a.report-path-link").click(function () {
+                tablefinder.launchDiscovererReport($(this).text());
+            });
 
             $("a.path-link").click(function () {
                 $("#dialog").html(

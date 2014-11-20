@@ -7,6 +7,23 @@
     <link rel="stylesheet" type="text/css" href="app/lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="app/styles/style.css">
 
+    <!-- TEMPLATES -->
+
+    <!-- Table Finder Sub-Tabs Template -->
+    <script type="text/template" id="table-finder-tabs-template">
+        <ul id="table-finder-tab-list">
+            <% _.each(tabs, function (tab) { %>
+                <li><a href="#tf-tabs-<%= tab.name %>"><%= tab.name %></a></li>
+            <% }); %>
+        </ul>
+        <% _.each(tabs, function (tab) { %>
+            <div id="tf-tabs-<%= tab.name %>">
+                <div><%= tab.content %></div>
+            </div>
+        <% }); %>
+    </script>
+
+    <!-- Table Finder Independant Table Path Template -->
     <script type="text/template" id="indep-paths-template">
         <table class="table" style="background-color: white;">
             <caption><%= title %></caption>
@@ -52,6 +69,7 @@
         </table>
     </script>
 
+    <!-- Table Finder Dependant Table Path Template -->
     <script type="text/template" id="dep-paths-template">
         <table class="table" style="background-color: white;">
             <caption><%= title %></caption>
@@ -97,6 +115,7 @@
         </table>
     </script>
 
+    <!-- Table Finder Independant Table Path Table List Template -->
     <script type="text/template" id="indep-table-list-template">
         <ul class="list-group" style="list-style-type:None;">
             <% _.each(tables, function (table) { %>
@@ -105,6 +124,7 @@
         </ul>
     </script>
 
+    <!-- Table Finder File Text Link Template -->
     <script type="text/template" id="file-text-template">
         <p>
             <% _.each(fileText, function (line) { %>
@@ -113,6 +133,24 @@
         </p>
     </script>
 
+    <!-- Table Finder Report Path Links Template -->
+    <script type="text/template" id="table-finder-reports-template">
+        <table class="table" style="background-color: white;">
+            <caption><%= title %></caption>
+            <thread>
+                <tr>
+                    <th>Report Path</th>
+                </tr>
+            </thread>
+            <tbody>
+                <% _.each(reports, function (report) { %>
+                    <tr><td><a class="report-path-link" href="#"><%= report.REPORT_PATH %></a></td></tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </script>
+
+    <!-- Error Log Template -->
     <script type="text/template" id="error-template">
         <table class="table" style="background-color:white;">
             <thread>
@@ -133,6 +171,7 @@
         </table>
     </script>
 
+    <!-- Table Auditor Template -->
     <script type="text/template" id="audit-template">
         <table class="table" style="background-color:white;">
             <caption>Table Row Counts for Last 3 Runs</caption>
@@ -162,20 +201,8 @@
         </table>
     </script>
 
-    <script type="text/template" id="table-finder-tabs-template">
-        <ul id="table-finder-tab-list">
-            <% _.each(tabs, function (tab) { %>
-                <li><a href="#tf-tabs-<%= tab.name %>"><%= tab.name %></a></li>
-            <% }); %>
-        </ul>
-        <% _.each(tabs, function (tab) { %>
-            <div id="tf-tabs-<%= tab.name %>">
-                <div><%= tab.content %></div>
-            </div>
-        <% }); %>
-    </script>
-
 </head>
+
 <body>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -189,6 +216,8 @@
                         <li><a id="error-tab" href="#tabs-2">Error Log</a></li>
                         <li><a id="table-audit-tab" href="#tabs-3">Table Audit</a></li>
                     </ul>
+
+                    <!-- Table Finder -->
                     <div id="tabs-1">
                         <div id="dialog" style="display: none;"></div>
                         <div class="jumbotron">
@@ -198,6 +227,8 @@
                         </div>
                         <div id="table-finder-tabs"></div>
                     </div>
+
+                    <!-- Error Log -->
                     <div id="tabs-2">
                         <div class="jumbotron">
                             <div class="input-group">
@@ -206,6 +237,8 @@
                         </div>
                         <div id="error-div"></div>
                     </div>
+
+                    <!-- Table Auditor -->
                     <div id="tabs-3">
                         <div class="jumbotron">
                             <h1>Table Audit</h1>
@@ -222,6 +255,7 @@
                         </table>
                         <div id="audit-div"></div>
                     </div>
+
                 </div>
             </span>
         </div>

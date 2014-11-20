@@ -80,6 +80,16 @@ tablefinder.getDepTableBySqlFileAndIndepTable = function (sqlFile, indepTable) {
     );
 }
 
+tablefinder.getTableToReportList = function () {
+    var cnn = ADODB.connection(
+            "Provider=msdaora;Data source=padh;"
+            + "User id=ppl;Password=energy"
+        );
+    return cnn.Execute(
+        "select * from padh_table_to_disc_report"
+    );
+}
+
 tablefinder.getFileText = function (filePath) {
     if (filePath === 'schedule') {
         filePath = 'padhaud/' + filePath;
@@ -90,4 +100,10 @@ tablefinder.getFileText = function (filePath) {
         + "\"cat /apps/ppl/adhoc/" + filePath + "\"");
 
     return shellStream.StdOut.ReadAll().split("\n");
+}
+
+tablefinder.launchDiscovererReport = function (reportPath) {
+    var oShell = new ActiveXObject("WScript.Shell");
+    var shellStream = oShell.Exec(
+        "C:\\oracle\\11.1.1\\bin\\dis51usr.exe \"" + reportPath + "\"");
 }
