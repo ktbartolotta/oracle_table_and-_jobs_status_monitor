@@ -104,6 +104,14 @@ tablefinder.getFileText = function (filePath) {
 
 tablefinder.launchDiscovererReport = function (reportPath) {
     var oShell = new ActiveXObject("WScript.Shell");
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+    var folder = fso.GetFolder(".\\");
+    var files = new Enumerator(folder.Files);
     var shellStream = oShell.Exec(
         "C:\\oracle\\11.1.1\\bin\\dis51usr.exe \"" + reportPath + "\"");
+    for(; !files.atEnd(); files.moveNext()) {
+        if (/diagnostic/gi.test(files.item())) {
+            files.item().Delete();
+        }
+    }
 }
