@@ -36,19 +36,19 @@ $(function () {
 
             if (depMatches.length > 0) {
                 tabs.push({
-                    name: "Dependant",
+                    name: "Dependent",
                     content: depTemplate({
                         matches: depMatches, 
-                        title: value + " Dependant Process Paths"
+                        title: value + " Dependent Process Paths"
                     })
                 });
             }
             if (indepMatches.length > 0) {
                 tabs.push({
-                    name: "Independant",
+                    name: "Independent",
                     content: indepTemplate({
                         matches: indepMatches,
-                        title: value + " Independant Process Paths"
+                        title: value + " Independent Process Paths"
                     })
                 });
             }
