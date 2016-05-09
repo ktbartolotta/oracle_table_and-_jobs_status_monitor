@@ -2,8 +2,8 @@ tableAuditor = {};
 
 tableAuditor.getTableList = function () {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
 
     return cnn.Execute(

@@ -27,7 +27,7 @@ errorReader.getErrorObjects = function () {
 errorReader.getFileText = function (filePath) {
     var oShell = new ActiveXObject("WScript.Shell");
     var shellStream = oShell.Exec(
-        "app\\rsc\\plink.exe " + tablefinder.getUserID() + "@lnx-efh-1: "
+        "app\\rsc\\plink.exe " + tablefinder.getUserID() + "@server: "
         + "\"cat " + filePath + "\"");
 
     return shellStream.StdOut.ReadAll().split("\n");

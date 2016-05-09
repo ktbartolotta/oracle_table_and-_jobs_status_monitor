@@ -7,8 +7,8 @@ tablefinder.getUserID = function () {
 
 tablefinder.getTables = function () {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
 
     return cnn.Execute(
@@ -22,8 +22,8 @@ tablefinder.getTables = function () {
 
 tablefinder.getList = function () {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
     return cnn.Execute(
         "select distinct process_path, start_file, sql_file, "
@@ -34,8 +34,8 @@ tablefinder.getList = function () {
 
 tablefinder.getFilePathToDepTableList = function () {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
     return cnn.Execute(
         "select distinct process_path, start_file, sql_file, "
@@ -46,8 +46,8 @@ tablefinder.getFilePathToDepTableList = function () {
 
 tablefinder.getIndepTableBySqlFileAndDepTable = function (sqlFile, depTable) {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
     return cnn.Execute(
         "select distinct independant_table from padh_table_process_paths_vw "
@@ -58,8 +58,8 @@ tablefinder.getIndepTableBySqlFileAndDepTable = function (sqlFile, depTable) {
 
 tablefinder.getFilePathToIndepTableList = function () {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
     return cnn.Execute(
         "select distinct process_path, start_file, sql_file, "
@@ -70,8 +70,8 @@ tablefinder.getFilePathToIndepTableList = function () {
 
 tablefinder.getDepTableBySqlFileAndIndepTable = function (sqlFile, indepTable) {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
     return cnn.Execute(
         "select distinct dependant_table from padh_table_process_paths_vw "
@@ -82,8 +82,8 @@ tablefinder.getDepTableBySqlFileAndIndepTable = function (sqlFile, indepTable) {
 
 tablefinder.getTableToReportList = function () {
     var cnn = ADODB.connection(
-            "Provider=msdaora;Data source=padh;"
-            + "User id=ppl;Password=energy"
+            "Provider=msdaora;Data source=host;"
+            + "User id=user;Password=password"
         );
     return cnn.Execute(
         "select * from padh_table_to_disc_report"
@@ -96,7 +96,7 @@ tablefinder.getFileText = function (filePath) {
     }
     var oShell = new ActiveXObject("WScript.Shell");
     var shellStream = oShell.Exec(
-        "app\\rsc\\plink.exe " + tablefinder.getUserID() + "@lnx-efh-1: "
+        "app\\rsc\\plink.exe " + tablefinder.getUserID() + "@server: "
         + "\"cat /apps/ppl/adhoc/" + filePath + "\"");
 
     return shellStream.StdOut.ReadAll().split("\n");
